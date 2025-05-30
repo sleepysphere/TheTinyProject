@@ -1,4 +1,4 @@
-#include "PosSymLinSystem.h"
+#include "../include/PosSymLinSystem.h"
 #include <cmath>
 #include <stdexcept>
 

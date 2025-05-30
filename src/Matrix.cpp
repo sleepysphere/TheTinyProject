@@ -1,4 +1,4 @@
-#include "Matrix.h"
+#include "../include/Matrix.h"
 #include <stdexcept>
 #include <cmath>
 
@@ -118,45 +118,6 @@ double Matrix::determinant() const {
     if (mNumRows == 2) return mData[0][0]*mData[1][1] - mData[0][1]*mData[1][0];
 
     throw std::runtime_error("Determinant not implemented for large matrices");
-}
-
-Matrix Matrix::inverse() const {
-    assert(mNumRows == mNumCols); // Must be square
-    int n = mNumRows;
-    Matrix aug(n, 2 * n);
-
-    // Initialize augmented matrix [A | I]
-    for (int i = 1; i <= n; ++i) {
-        for (int j = 1; j <= n; ++j)
-            aug(i, j) = (*this)(i, j);
-        aug(i, n + i) = 1.0;
-    }
-
-    // Forward elimination
-    for (int i = 1; i <= n; ++i) {
-        // Pivot
-        double pivot = aug(i, i);
-        if (fabs(pivot) < 1e-12)
-            throw std::runtime_error("Matrix is singular or near-singular");
-        for (int j = 1; j <= 2 * n; ++j)
-            aug(i, j) /= pivot;
-
-        // Eliminate column i in other rows
-        for (int k = 1; k <= n; ++k) {
-            if (k == i) continue;
-            double factor = aug(k, i);
-            for (int j = 1; j <= 2 * n; ++j)
-                aug(k, j) -= factor * aug(i, j);
-        }
-    }
-
-    // Extract inverse from augmented matrix
-    Matrix inv(n, n);
-    for (int i = 1; i <= n; ++i)
-        for (int j = 1; j <= n; ++j)
-            inv(i, j) = aug(i, n + j);
-
-    return inv;
 }
 
 Matrix Matrix::inverse() const {

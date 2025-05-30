@@ -1,4 +1,4 @@
-#include "LinearSystem.h"
+#include "../include/LinearSystem.h"
 #include <stdexcept>
 #include <cmath>
 

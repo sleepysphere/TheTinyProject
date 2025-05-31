@@ -36,8 +36,9 @@ class Matrix {
         Vector operator*(const Vector& vec) const;   // Matrix-vector multiplication
         Matrix operator*(double scalar) const;       // Scalar multiplication
 
-        // Determinant and Inverse
+        // Determinant, Tranpose and Inverse
         double determinant() const;
+        Matrix transpose() const;
         Matrix inverse() const;
         Matrix pseudoInverse() const;
 

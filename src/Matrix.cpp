@@ -120,6 +120,14 @@ double Matrix::determinant() const {
     throw std::runtime_error("Determinant not implemented for large matrices");
 }
 
+Matrix Matrix::transpose() const {
+    Matrix result(mNumCols, mNumRows);
+    for (int i = 1; i <= mNumRows; ++i)
+        for (int j = 1; j <= mNumCols; ++j)
+            result(j, i) = (*this)(i, j);
+    return result;
+}
+
 Matrix Matrix::inverse() const {
     assert(mNumRows == mNumCols); // Must be square
     int n = mNumRows;

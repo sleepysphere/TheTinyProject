@@ -6,17 +6,28 @@
 ---
 
 **Members**
-*- Võ Minh Duy           -   10423028*
-*- Đỗ Minh Triết         -   10423114*
-*- Phạm Nguyên Phương    -   10423094*
+
+*Võ Minh Duy           -   10423028*
+*Đỗ Minh Triết         -   10423114*
+*Phạm Nguyên Phương    -   10423094*
+
 **Instructor**
-*- Professor Huỳnh Trung Hiếu*
+
+*Professor Huỳnh Trung Hiếu*
 
 ## Objectives
 
+This project is divided into two main parts and focuses on implementing mathematical structures and solving real-world linear algebra problems, both analytically and in application to data.
+
 ### Part A
 
-> You are required to build the ***Vector*** class and ***Matrix*** class. These classes are then combined into a ***LinearSystem*** class (or alternative classes derived from it) which has methods for solving systems of the form **Ax = b** for **x**. You are required to define files *.h* or *.hpp* and *.cpp* for *Vector*, *Matrix* and ***LinearSystem*** classes.
+<span style="color:white;">
+
+> You are required to build the ***Vector*** class and ***Matrix*** class. These classes are then combined into a ***LinearSystem*** class (or alternative classes derived from it) which has methods for solving systems of the form ***Ax = b*** for ***x***. You are required to define files *.h* or *.hpp* and *.cpp* for ***Vector***, ***Matrix*** and ***LinearSystem*** classes.
+
+</span>
+
+<span style="color:white;">
 
 1. > You are required to develop a class of matrices called ***Vector***. It will include constructors anddestructors that handle memory management. It will overload the assignment, unary and binary operators to allow addition, subtraction, and multiplication of vectors and scalars. The square bracket operator will be overloaded for the vector class to provide a check that the index of the array lies within the correct range, and the round bracket operator will be overloaded to allow the entries of the vector to be accessed, indexing from 1 rather than from zero. The class should have private members mSize (the size of the array) and mData that is a pointer to a data element of array.
 
@@ -35,8 +46,11 @@
 
 4. > You will develop the solutions for under-determined or over-determined linear system, where the matrix **A** is not square. The solutions can use the Moore-Penrose inverse and/or Tikhonov regularization to deal with the Ill-posed problem.
 
+</span>
+
 ### Part B
-> You will develop a linear regression prediction of relative cpu performance. Dataset could be downloaded from UCI: *<https://archive.ics.uci.edu/ml/datasets/Computer%2BHardware>*. The number of instances is 209. Every instance has 10 features (6 predictive attributes, 2 non-predictive, 1 goal field, and the linear regression's guess):
+
+> You will develop a linear regression prediction of relative cpu performance. Dataset could be downloaded from UCI: <ins>*<https://archive.ics.uci.edu/ml/datasets/Computer%2BHardware>*</ins>. The number of instances is 209. Every instance has 10 features (6 predictive attributes, 2 non-predictive, 1 goal field, and the linear regression's guess):
 >> 1.   Vendor name
 >> 2.   Model Name: many unique symbols
 >> 3.   MYCT: machine cycle time in nanoseconds (integer)
@@ -47,4 +61,55 @@
 >> 8.   CHMAX: maximum channels in units (integer)
 >> 9.   PRP: published relative performance (integer)
 >> 10.  ERP: estimated relative performance from the original article (integer)
+
 > We assume that there is a linear regression model for determining the relative performance as ***PRP=x1\*MYCT+ x2\*MMIN+ x3\*MMAX+ x4\*CACH+ x5\*CHMIN+ x6\*CHMAX*** *(1)* where xi’s are parameters of model. You utilize the above methods for solving systems to find theparameters of *(1)*. The dataset is divided into two sets, training set (80%) is used to determine model parameters and testing set (20%) is used for evaluation. The evaluation can use the criterion of root mean square errors (RMSEs).
+
+## Execution
+
+### File Structure
+```
+.
+├──include/
+│   ├── Vector.h
+│   ├── Matrix.h
+│   └── LinearSystem.h
+├── src/
+│   ├── Vector.cpp
+│   ├── Matrix.cpp
+│   └── LinearSystem.cpp
+├── test/
+│   ├── TestVector.cpp
+│   ├── TestMatrix.cpp
+│   └── TestLinearSystem.cpp
+├── data/
+│   └── machine.data
+├── README.md
+└── main.cpp
+```
+### Build and Run
+
+:warning: Working on this later
+
+### Results
+
+:warning: Working on this later
+
+### Remarks
+
+:warning: Working on this later
+
+## References
+ * UCI Machine Learning Dataset: [Computer Hardware Data](https://archive.ics.uci.edu/ml/datasets/Computer%2BHardware)
+ * Programming 2 Course Materials (VGU - CSE)
+
+## Notes
+
+:warning: Working on this later
+
+## Conclusion
+
+This project provided hands-on experience in implementing core numerical methods and data structures from scratch in C++. By developing ***Vector***, ***Matrix***, and ***LinearSystem*** classes, we deepened our understanding of memory management, operator overloading, and linear algebra algorithms like Gaussian elimination and the conjugate gradient method.
+
+Furthermore, applying these methods to real-world data through linear regression showcased the power and relevance of these foundational techniques in practical machine learning scenarios.
+
+The project not only reinforced our programming skills but also demonstrated the value of mathematical modeling and numerical computation in solving complex problems efficiently and accurately.

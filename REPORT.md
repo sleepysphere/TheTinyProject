@@ -1,8 +1,9 @@
-<div align="center" style="display: flex; align-items: center; justify-content: center; gap: 20px;">
-  <img src="./logo.png" alt="logo" height="80">
-  <h3 style="margin: 0; weight:60px"> The Tiny Project </h3>
-</div>
-
+<table align="center">
+  <tr>
+    <td><img src="./logo.png" alt="logo" height="80"></td>
+    <td><h1 style="margin-left: 20px;">The Tiny Project</h1></td>
+  </tr>
+</table>
 
 ---
 

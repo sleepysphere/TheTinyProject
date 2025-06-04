@@ -1,11 +1,4 @@
-<style>
-red { color: rgb(255, 0, 0) }
-green { color:rgb(0, 255, 0)}
-yellow { color: rgb(255, 255, 0) }
-blue {color: rgb(0, 217, 255)}
-</style>
-
-<div align="center" style="display: flex; align-items: center; justify-content: center; gap: 300px;">
+<div align="center" style="display: flex; align-items: center; justify-content: center; gap: 100px;">
   <img src="./logo.png" alt="logo" height="80">
   <h3 style="margin: 0; weight:60px"> The Tiny Project </h3>
 </div>
@@ -101,14 +94,13 @@ The project demonstrates practical understanding of C++ features such as dynamic
 
 ## 5. Testing & Validation
 
-:warning: **<red>WORKING ON THIS LATER</red>**
+<h5 style='color:red'> WORKING ON THIS LATER </h5>
 
 ---
 
 ## 6. Results
 
-:warning: **<red>WORKING ON THIS LATER</red>**
-
+<h5 style='color:red'> WORKING ON THIS LATER </h5>
 
 ---
 

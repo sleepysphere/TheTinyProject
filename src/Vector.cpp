@@ -63,14 +63,16 @@ Vector& Vector::operator=(const Vector& otherVector) {
 }
 
 double& Vector::operator[](int index) {
-    if (index < 0 || index >= mSize)
-        throw std::out_of_range("Index out of bounds");
+    if (index < 0 || index >= mSize) { // Check bounds
+        throw std::out_of_range("Index out of bounds (0-based)"); // Throw exception
+    }
     return mData[index];
 }
 
 const double& Vector::operator[](int index) const {
-    if (index < 0 || index >= mSize)
-        throw std::out_of_range("Index out of bounds");
+    if (index < 0 || index >= mSize) { // Check bounds
+        throw std::out_of_range("Index out of bounds (0-based)"); // Throw exception
+    }
     return mData[index];
 }
 

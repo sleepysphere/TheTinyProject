@@ -130,7 +130,8 @@ bool test18() {
     try {
         double x = v[5];
         return false;
-    } catch (...) {
+    } catch (std::exception& e) {
+        //std::cout << "Caught expected exception: " << e.what() << "\n";
         return true;
     }
 }
@@ -140,7 +141,8 @@ bool test19() {
     try {
         double x = v(0); // 1-based access
         return false;
-    } catch (...) {
+    } catch (std::exception& e) {
+        //std::cout << "Caught expected exception: " << e.what() << "\n";
         return true;
     }
 }

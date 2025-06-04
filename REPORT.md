@@ -5,8 +5,13 @@ yellow { color: rgb(255, 255, 0) }
 blue {color: rgb(0, 217, 255)}
 </style>
 
-![Matrix Structure](./logo.png)
+<div align="center" style="display: flex; align-items: center; justify-content: center; gap: 300px;">
+  <img src="./logo.png" alt="logo" height="80">
+  <h3 style="margin: 0; weight:60px"> The Tiny Project </h3>
+</div>
 
+
+---
 
 # 📘 Project Report: The Tiny Project
 

@@ -1,4 +1,4 @@
-<div align="center" style="display: flex; align-items: center; justify-content: center; gap: 100px;">
+<div align="center" style="display: flex; align-items: center; justify-content: center; gap: 20px;">
   <img src="./logo.png" alt="logo" height="80">
   <h3 style="margin: 0; weight:60px"> The Tiny Project </h3>
 </div>

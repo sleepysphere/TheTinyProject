@@ -1,33 +1,102 @@
 #include "../include/Vector.h"
+
 #include <iostream>
-#include <stdexcept>
+#include <cassert>
+#include <cmath>
+#include <iomanip>
 
 Vector::Vector() : mSize(0), mData(nullptr) {}
-Vector::Vector(int size) : mSize(size){
-    if(size <=8 ) throw std::invalid_argument("Size must be greater than 0");
-    mData = new double[size];
+
+Vector::Vector(int size) {
+    assert(size >= 0);
+    mSize = size;
+    if (mSize > 0) {
+        mData = new double[mSize];
+        for (int i = 0; i < mSize; ++i) {
+            mData[i] = 0.0;
+        }
+    } else {
+        mData = nullptr;
+    }
 }
 
-Vector::Vector(const Vector& other) : mSize(other.mSize){
-    mData = new double[mSize];
-    for(int i = 0; i < mSize; ++i)
-        mData[i] = other.mData[i];
+Vector::Vector(const Vector& otherVector) {
+    mSize = otherVector.mSize;
+    if (mSize > 0) {
+        mData = new double[mSize];
+        for (int i = 0; i < mSize; i++) {
+            mData[i] = otherVector.mData[i];
+        }
+    } else {
+        mData = nullptr;
+    }
 }
 
 Vector::~Vector(){
     delete[] mData;
 }
 
-Vector& Vector::operator=(const Vector& other) {
-    if (this == &other)
-        return *this;
+int Vector::size() const {
+    return mSize;
+}
 
-    delete[] mData;
-    mSize = other.mSize;
-    mData = new double[mSize];
-    for (int i = 0; i < mSize; ++i)
-        mData[i] = other.mData[i];
+Vector& Vector::operator=(const Vector& otherVector) {
+    if (this == &otherVector) {
+        return *this;
+    }
+    if (mSize != otherVector.mSize && mData != nullptr) {
+        delete[] mData;
+        mData = nullptr;
+    }
+    mSize = otherVector.mSize;
+    if (mSize > 0) {
+        if (mData == nullptr) {
+            mData = new double[mSize];
+        }
+        for (int i = 0; i < mSize; i++) {
+            mData[i] = otherVector.mData[i];
+        }
+    } else {
+        mData = nullptr;
+    }
     return *this;
+}
+
+double& Vector::operator[](int index) {
+    if (index < 0 || index >= mSize)
+        throw std::out_of_range("Index out of bounds");
+    return mData[index];
+}
+
+const double& Vector::operator[](int index) const {
+    if (index < 0 || index >= mSize)
+        throw std::out_of_range("Index out of bounds");
+    return mData[index];
+}
+
+double& Vector::operator()(int index) {
+    if (index < 1 || index > mSize)
+        throw std::out_of_range("Index out of bounds (1-based)");
+    return mData[index - 1];
+}
+
+const double& Vector::operator()(int index) const {
+    if (index < 1 || index > mSize)
+        throw std::out_of_range("Index out of bounds (1-based)");
+    return mData[index - 1];
+}
+
+
+Vector Vector::operator+() const {
+    return *this;
+}
+
+Vector Vector::operator-() const {
+    Vector result(mSize);
+    for (int i = 0; i < mSize; i++) {
+        result.mData[i] = -mData[i];
+    }
+    return result;
 }
 
 Vector Vector::operator+(const Vector& other) const {
@@ -55,41 +124,8 @@ Vector Vector::operator*(double scalar) const {
     return result;
 }
 
-double Vector::operator*(const Vector& other) const {
-    if (mSize != other.mSize)
-        throw std::invalid_argument("Vectors must be of the same size");
-    double result = 0;
-    for (int i = 0; i < mSize; ++i)
-        result += mData[i] * other.mData[i];
-    return result;
-}
-
-double& Vector::operator[](int index) {
-    if (index < 0 || index >= mSize)
-        throw std::out_of_range("Index out of range");
-    return mData[index];
-}
-
-double Vector::operator[](int index) const {
-    if (index < 0 || index >= mSize)
-        throw std::out_of_range("Index out of range");
-    return mData[index];
-}
-
-double& Vector::operator()(int index) {
-    if (index < 0 || index >= mSize)
-        throw std::out_of_range("Index out of range");
-    return mData[index];
-}
-
-double Vector::operator()(int index) const {
-    if (index < 0 || index >= mSize)
-        throw std::out_of_range("Index out of range");
-    return mData[index];
-}
-
-int Vector::size() const {
-    return mSize;
+Vector operator*(double scalar, const Vector& v) {
+    return v * scalar;
 }
 
 std::ostream& operator<<(std::ostream& os, const Vector& vec) {
@@ -101,4 +137,29 @@ std::ostream& operator<<(std::ostream& os, const Vector& vec) {
     }
     os << "]";
     return os;
+}
+
+double Vector::Norm(int p) const {
+    assert(p >= 1);
+    double sum = 0.0;
+    
+    if (p == 1) {
+        for (int i = 0; i < mSize; ++i) {
+            sum += std::abs(mData[i]);
+        }
+        return sum;
+    }
+
+    if (p == 2) {
+        for (int i = 0; i < mSize; ++i) {
+            sum += mData[i] * mData[i];
+        }
+        return std::sqrt(sum);
+    }
+
+    for (int i = 0; i < mSize; ++i) {
+        sum += std::pow(std::abs(mData[i]), p);
+    }
+
+    return std::pow(sum, 1.0/p);
 }

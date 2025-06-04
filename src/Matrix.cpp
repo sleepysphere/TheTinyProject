@@ -112,12 +112,29 @@ Matrix Matrix::operator*(double scalar) const {
 // --- Determinant, Inverse, Pseudo-Inverse placeholders ---
 
 double Matrix::determinant() const {
-    assert(mNumRows == mNumCols);
-    // Basic determinant using Laplace expansion (for small matrices only)
-    if (mNumRows == 1) return mData[0][0];
-    if (mNumRows == 2) return mData[0][0]*mData[1][1] - mData[0][1]*mData[1][0];
+    if (mNumRows != mNumCols)
+        throw std::invalid_argument("Determinant is defined only for square matrices");
 
-    throw std::runtime_error("Determinant not implemented for large matrices");
+    int n = mNumRows;
+    if (n == 1) return mData[0][0];
+    if (n == 2) return mData[0][0]*mData[1][1] - mData[0][1]*mData[1][0];
+
+    double det = 0.0;
+    for (int col = 0; col < n; ++col) {
+        Matrix subMat(n - 1, n - 1);
+        for (int i = 1; i < n; ++i) {
+            int subCol = 0;
+            for (int j = 0; j < n; ++j) {
+                if (j == col) continue;
+                subMat(i, subCol + 1) = mData[i][j];
+                subCol++;
+            }
+        }
+        double sign = (col % 2 == 0) ? 1.0 : -1.0;
+        det += sign * mData[0][col] * subMat.determinant();
+    }
+
+    return det;
 }
 
 Matrix Matrix::transpose() const {
@@ -165,6 +182,14 @@ Matrix Matrix::inverse() const {
             inv(i, j) = aug(i, n + j);
 
     return inv;
+}
+
+Matrix Matrix::pseudoInverse() const {
+    Matrix At = this->transpose();
+    Matrix AtA = At * (*this);
+    Matrix AtA_inv = AtA.inverse();
+    Matrix pinv = AtA_inv * At;
+    return pinv;
 }
 
 std::ostream& operator<<(std::ostream& os, const Matrix& mat) {

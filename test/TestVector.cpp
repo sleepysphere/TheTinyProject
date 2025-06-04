@@ -1,186 +1,158 @@
 #include "../include/Vector.h"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <sstream>
+#include <cmath>
+#include <cassert>
 
 const double EPS = 1e-9;
 
 bool test1() {
-    try {
-        Vector v(9);
-        return v.size() == 9;
-    } catch (...) {
-        return false;
-    }
+    Vector v(5);
+    return v.size() == 5;
 }
 
 bool test2() {
-    try {
-        Vector v(5); // Should throw
-        return false;
-    } catch (const std::invalid_argument&) {
-        return true;
-    }
+    Vector v;
+    return v.size() == 0;
 }
 
 bool test3() {
-    Vector v(9);
-    v[0] = 1.5;
-    return std::abs(v[0] - 1.5) < EPS;
+    Vector v(3);
+    v[0] = 1.0;
+    v[1] = 2.0;
+    v[2] = 3.0;
+    return std::abs(v[1] - 2.0) < EPS;
 }
 
 bool test4() {
-    Vector v(9);
-    v(1) = 2.3;
-    return std::abs(v(1) - 2.3) < EPS;
+    Vector v(3);
+    v(1) = 4.0;
+    return std::abs(v(1) - 4.0) < EPS;
 }
 
 bool test5() {
-    try {
-        Vector v(9);
-        v[10] = 5.0; // out of bounds
-        return false;
-    } catch (const std::out_of_range&) {
-        return true;
-    }
+    Vector v1(3), v2(3);
+    v1[0] = 1.0; v2[0] = 2.0;
+    Vector v3 = v1 + v2;
+    return std::abs(v3[0] - 3.0) < EPS;
 }
 
 bool test6() {
-    try {
-        Vector v(9);
-        double x = v(-1); // out of bounds
-        return false;
-    } catch (const std::out_of_range&) {
-        return true;
-    }
+    Vector v1(3), v2(3);
+    v1[1] = 5.0; v2[1] = 3.0;
+    Vector v3 = v1 - v2;
+    return std::abs(v3[1] - 2.0) < EPS;
 }
 
 bool test7() {
-    Vector v1(9), v2(9);
-    for (int i = 0; i < 9; ++i) v1[i] = i;
-    v2 = v1;
-    for (int i = 0; i < 9; ++i)
-        if (v2[i] != v1[i]) return false;
-    return true;
+    Vector v(3);
+    v[0] = 2.0;
+    Vector s = v * 3.0;
+    return std::abs(s[0] - 6.0) < EPS;
 }
 
 bool test8() {
-    Vector v1(9), v2(9);
-    for (int i = 0; i < 9; ++i) {
-        v1[i] = i;
-        v2[i] = i * 2;
-    }
-    Vector v3 = v1 + v2;
-    for (int i = 0; i < 9; ++i)
-        if (v3[i] != v1[i] + v2[i]) return false;
-    return true;
+    Vector v(3);
+    v[1] = 2.0;
+    Vector s = 4.0 * v;
+    return std::abs(s[1] - 8.0) < EPS;
 }
 
 bool test9() {
-    Vector v1(9), v2(9);
-    for (int i = 0; i < 9; ++i) {
-        v1[i] = i;
-        v2[i] = i * 3;
-    }
-    Vector v3 = v2 - v1;
-    for (int i = 0; i < 9; ++i)
-        if (v3[i] != v2[i] - v1[i]) return false;
+    Vector v1(3);
+    for (int i = 0; i < 3; ++i) v1[i] = i + 1;
+    Vector v2(v1);
+    for (int i = 0; i < 3; ++i)
+        if (std::abs(v1[i] - v2[i]) > EPS) return false;
     return true;
 }
 
 bool test10() {
-    Vector v(9);
-    for (int i = 0; i < 9; ++i) v[i] = i + 1;
-    Vector v2 = v * 2.0;
-    for (int i = 0; i < 9; ++i)
-        if (std::abs(v2[i] - 2 * v[i]) > EPS) return false;
-    return true;
+    Vector v1(3), v2(3);
+    v1[0] = 1.0;
+    v2 = v1;
+    return std::abs(v2[0] - 1.0) < EPS;
 }
 
 bool test11() {
-    Vector v1(9), v2(9);
-    for (int i = 0; i < 9; ++i) {
-        v1[i] = i + 1;
-        v2[i] = 1.0;
-    }
-    return std::abs(v1 * v2 - 45.0) < EPS; // sum of 1 to 9 = 45
+    Vector v1(3);
+    v1 = v1;
+    return v1.size() == 3;
 }
 
 bool test12() {
-    try {
-        Vector v1(9), v2(10);
-        auto v3 = v1 + v2;
-        return false;
-    } catch (const std::invalid_argument&) {
-        return true;
-    }
+    Vector v(3);
+    for (int i = 0; i < 3; ++i) v[i] = -i;
+    Vector neg = -v;
+    for (int i = 0; i < 3; ++i)
+        if (std::abs(neg[i] + i) > EPS) return false;
+    return true;
 }
 
 bool test13() {
-    try {
-        Vector v1(9), v2(10);
-        auto v3 = v1 - v2;
-        return false;
-    } catch (const std::invalid_argument&) {
-        return true;
-    }
+    Vector v(3);
+    for (int i = 0; i < 3; ++i) v[i] = i;
+    Vector id = +v;
+    for (int i = 0; i < 3; ++i)
+        if (std::abs(id[i] - i) > EPS) return false;
+    return true;
 }
 
 bool test14() {
+    Vector v(3);
+    v[0] = -3.0; v[1] = 4.0; v[2] = 0.0;
+    return std::abs(v.Norm(2) - 5.0) < EPS;
+}
+
+bool test15() {
+    Vector v(3);
+    v[0] = 1.0; v[1] = -2.0; v[2] = 3.0;
+    return std::abs(v.Norm(1) - 6.0) < EPS;
+}
+
+bool test16() {
+    Vector v(3);
+    v[0] = 2.0; v[1] = 0.0; v[2] = -2.0;
+    double n = v.Norm(4);
+    return std::abs(n - std::pow(2.0 * 2.0 * 2.0 * 2.0 + 2.0 * 2.0 * 2.0 * 2.0, 1.0/4)) < EPS;
+}
+
+bool test17() {
+    Vector v(3);
+    std::ostringstream oss;
+    oss << v;
+    std::string out = oss.str();
+    return out.find("[") == 0 && out.find("]") == out.size() - 1;
+}
+
+bool test18() {
+    Vector v(3);
     try {
-        Vector v1(9), v2(10);
-        auto dot = v1 * v2;
+        double x = v[5];
         return false;
-    } catch (const std::invalid_argument&) {
+    } catch (...) {
         return true;
     }
 }
 
-bool test15() {
-    Vector v1(9);
-    for (int i = 0; i < 9; ++i) v1[i] = i;
-    Vector v2(v1);
-    for (int i = 0; i < 9; ++i)
-        if (v1[i] != v2[i]) return false;
-    return true;
-}
-
-bool test16() {
-    Vector v1(9);
-    for (int i = 0; i < 9; ++i) v1[i] = i;
-    std::ostringstream oss;
-    oss << v1;
-    std::string output = oss.str();
-    return output.find("[") == 0 && output.find("]") == output.size() - 1;
-}
-
-bool test17() {
-    Vector v(9);
-    for (int i = 0; i < 9; ++i) v(i) = i * 3.0;
-    for (int i = 0; i < 9; ++i)
-        if (v(i) != i * 3.0) return false;
-    return true;
-}
-
-bool test18() {
-    Vector v1(9), v2(9);
-    v1 = v1 = v2;
-    return v1.size() == 9;
-}
-
 bool test19() {
-    Vector v(9);
-    for (int i = 0; i < 9; ++i) v[i] = 1.0;
-    double sum = 0;
-    for (int i = 0; i < 9; ++i) sum += v[i];
-    return std::abs(sum - 9.0) < EPS;
+    Vector v(3);
+    try {
+        double x = v(0); // 1-based access
+        return false;
+    } catch (...) {
+        return true;
+    }
 }
 
 bool test20() {
-    Vector v(9);
-    for (int i = 0; i < 9; ++i) v[i] = 5.0;
-    Vector v2 = v * 0.0;
-    for (int i = 0; i < 9; ++i)
-        if (std::abs(v2[i]) > EPS) return false;
-    return true;
+    Vector v1(3), v2(4);
+    try {
+        Vector v3 = v1 + v2;
+        return false;
+    } catch (const std::invalid_argument&) {
+        return true;
+    }
 }
 
 int main() {
@@ -208,6 +180,6 @@ int main() {
             case 19: result = test19(); break;
             case 20: result = test20(); break;
         }
-        std::cout << "test" << i << ": " << (result ? "PASSED" : "FAILED") << "\n";
+        std::cout << "Test " << i << ": " << (result ? "PASSED" : "FAILED") << "\n";
     }
 }

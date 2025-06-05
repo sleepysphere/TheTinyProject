@@ -131,6 +131,5 @@ std::ostream& operator<<(std::ostream& os, const Vector& v) {
         if (i + 1 < v.mSize) os << ", ";
     }
     os << ")";
-    os << ")";
     return os;
 }

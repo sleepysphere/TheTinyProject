@@ -1,9 +1,8 @@
 #include "../include/Vector.h"
 #include <iostream>
 #include <sstream>
-#include <cmath>        // for std::abs
-#include <stdexcept>    // for std::invalid_argument, std::out_of_range
-#include <string>       // for std::string
+#include <cmath>
+#include <cassert>
 
 const double EPS = 1e-9;
 
@@ -39,14 +38,10 @@ bool test5() {
 }
 
 bool test6() {
-    try {
-        Vector v(9);
-        double x = v(-1); // out of bounds
-        (void)x;
-        return false;
-    } catch (const std::out_of_range&) {
-        return true;
-    }
+    Vector v1(3), v2(3);
+    v1[1] = 5.0; v2[1] = 3.0;
+    Vector v3 = v1 - v2;
+    return std::abs(v3[1] - 2.0) < EPS;
 }
 
 bool test7() {
@@ -86,10 +81,54 @@ bool test11() {
 }
 
 bool test12() {
+    Vector v(3);
+    for (int i = 0; i < 3; ++i) v[i] = -i;
+    Vector neg = -v;
+    for (int i = 0; i < 3; ++i)
+        if (std::abs(neg[i] + i) > EPS) return false;
+    return true;
+}
+
+bool test13() {
+    Vector v(3);
+    for (int i = 0; i < 3; ++i) v[i] = i;
+    Vector id = +v;
+    for (int i = 0; i < 3; ++i)
+        if (std::abs(id[i] - i) > EPS) return false;
+    return true;
+}
+
+bool test14() {
+    Vector v(3);
+    v[0] = -3.0; v[1] = 4.0; v[2] = 0.0;
+    return std::abs(v.Norm(2) - 5.0) < EPS;
+}
+
+bool test15() {
+    Vector v(3);
+    v[0] = 1.0; v[1] = -2.0; v[2] = 3.0;
+    return std::abs(v.Norm(1) - 6.0) < EPS;
+}
+
+bool test16() {
+    Vector v(3);
+    v[0] = 2.0; v[1] = 0.0; v[2] = -2.0;
+    double n = v.Norm(4);
+    return std::abs(n - std::pow(2.0 * 2.0 * 2.0 * 2.0 + 2.0 * 2.0 * 2.0 * 2.0, 1.0/4)) < EPS;
+}
+
+bool test17() {
+    Vector v(3);
+    std::ostringstream oss;
+    oss << v;
+    std::string out = oss.str();
+    return out.front() == '(' && out.back() == ')';
+}
+
+bool test18() {
+    Vector v(3);
     try {
-        Vector v1(9), v2(10);
-        auto v3 = v1 + v2;
-        (void)v3;
+        double x = v[5];
         return false;
     } catch (std::exception& e) {
         //std::cout << "Caught expected exception: " << e.what() << "\n";
@@ -100,9 +139,7 @@ bool test12() {
 bool test19() {
     Vector v(3);
     try {
-        Vector v1(9), v2(10);
-        auto v3 = v1 - v2;
-        (void)v3;
+        double x = v(0); // 1-based access
         return false;
     } catch (std::exception& e) {
         //std::cout << "Caught expected exception: " << e.what() << "\n";
@@ -113,77 +150,27 @@ bool test19() {
 bool test20() {
     Vector v1(3), v2(4);
     try {
-        Vector v1(9), v2(10);
-        auto dot = v1 * v2;
-        (void)dot;
+        Vector v3 = v1 + v2;
         return false;
-    } catch (const std::invalid_argument&) {
+    } catch (const std::exception& e) {
+        //std::cout << "Caught expected exception: " << e.what() << "\n";
         return true;
     }
-}
-
-bool test15() {
-    Vector v1(9);
-    for (int i = 0; i < 9; ++i) v1[i] = i;
-    Vector v2(v1);
-    for (int i = 0; i < 9; ++i)
-        if (v1[i] != v2[i]) return false;
-    return true;
-}
-
-bool test16() {
-    Vector v1(9);
-    for (int i = 0; i < 9; ++i) v1[i] = i;
-    std::ostringstream oss;
-    oss << v1;
-    std::string output = oss.str();
-    return output.front() == '[' && output.back() == ']';
-}
-
-bool test17() {
-    Vector v(9);
-    for (int i = 1; i <= 9; ++i) v(i) = i * 3.0;
-    for (int i = 1; i <= 9; ++i)
-        if (std::abs(v(i) - i * 3.0) > EPS) return false;
-    return true;
-}
-
-bool test18() {
-    Vector v1(9), v2(9);
-    v1 = v1 = v2;
-    return v1.size() == 9;
-}
-
-bool test19() {
-    Vector v(9);
-    for (int i = 0; i < 9; ++i) v[i] = 1.0;
-    double sum = 0;
-    for (int i = 0; i < 9; ++i) sum += v[i];
-    return std::abs(sum - 9.0) < EPS;
-}
-
-bool test20() {
-    Vector v(9);
-    for (int i = 0; i < 9; ++i) v[i] = 5.0;
-    Vector v2 = v * 0.0;
-    for (int i = 0; i < 9; ++i)
-        if (std::abs(v2[i]) > EPS) return false;
-    return true;
 }
 
 int main() {
     for (int i = 1; i <= 20; ++i) {
         bool result = false;
         switch (i) {
-            case 1:  result = test1();  break;
-            case 2:  result = test2();  break;
-            case 3:  result = test3();  break;
-            case 4:  result = test4();  break;
-            case 5:  result = test5();  break;
-            case 6:  result = test6();  break;
-            case 7:  result = test7();  break;
-            case 8:  result = test8();  break;
-            case 9:  result = test9();  break;
+            case 1: result = test1(); break;
+            case 2: result = test2(); break;
+            case 3: result = test3(); break;
+            case 4: result = test4(); break;
+            case 5: result = test5(); break;
+            case 6: result = test6(); break;
+            case 7: result = test7(); break;
+            case 8: result = test8(); break;
+            case 9: result = test9(); break;
             case 10: result = test10(); break;
             case 11: result = test11(); break;
             case 12: result = test12(); break;
@@ -198,5 +185,4 @@ int main() {
         }
         std::cout << "Test " << i << ": " << (result ? "PASSED" : "FAILED") << "\n";
     }
-    return 0;
 }

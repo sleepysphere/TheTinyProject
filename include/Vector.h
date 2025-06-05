@@ -11,7 +11,7 @@ private:
     std::size_t mSize;
     double*     mData;
 public:
-    // ctor: throws if size <= 5
+    Vector();                    // ← add this
     Vector(std::size_t size);
 
     // copy ctor
@@ -33,9 +33,16 @@ public:
     double&       operator()(std::size_t idx);
     const double& operator()(std::size_t idx) const;
 
-    // vector + vector, vector − vector
+    // vector + vector, vector – vector
     Vector operator+(const Vector& rhs) const;
     Vector operator-(const Vector& rhs) const;
+
+    // unary plus/minus
+    Vector operator+() const;
+    Vector operator-() const;
+
+    // p‐norm (p > 0)
+    double Norm(int p) const;
 
     // scalar multiply
     Vector operator*(double s) const;

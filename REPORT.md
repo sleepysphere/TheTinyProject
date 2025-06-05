@@ -1,6 +1,6 @@
 <table align="center">
   <tr>
-    <td><img src="./logo.png" alt="logo" height="80"></td>
+    <td><img src="./assets/logo.png" alt="logo" height="80"></td>
     <td><h1 style="margin-left: 20px;">The Tiny Project</h1></td>
   </tr>
 </table>

@@ -1,5 +1,9 @@
 #include "../include/Vector.h"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <sstream>
+#include <cmath>        // for std::abs
+#include <stdexcept>    // for std::invalid_argument, std::out_of_range
+#include <string>       // for std::string
 
 const double EPS = 1e-9;
 
@@ -47,6 +51,7 @@ bool test6() {
     try {
         Vector v(9);
         double x = v(-1); // out of bounds
+        (void)x;
         return false;
     } catch (const std::out_of_range&) {
         return true;
@@ -108,6 +113,7 @@ bool test12() {
     try {
         Vector v1(9), v2(10);
         auto v3 = v1 + v2;
+        (void)v3;
         return false;
     } catch (const std::invalid_argument&) {
         return true;
@@ -118,6 +124,7 @@ bool test13() {
     try {
         Vector v1(9), v2(10);
         auto v3 = v1 - v2;
+        (void)v3;
         return false;
     } catch (const std::invalid_argument&) {
         return true;
@@ -128,6 +135,7 @@ bool test14() {
     try {
         Vector v1(9), v2(10);
         auto dot = v1 * v2;
+        (void)dot;
         return false;
     } catch (const std::invalid_argument&) {
         return true;
@@ -149,14 +157,14 @@ bool test16() {
     std::ostringstream oss;
     oss << v1;
     std::string output = oss.str();
-    return output.find("[") == 0 && output.find("]") == output.size() - 1;
+    return output.front() == '[' && output.back() == ']';
 }
 
 bool test17() {
     Vector v(9);
-    for (int i = 0; i < 9; ++i) v(i) = i * 3.0;
-    for (int i = 0; i < 9; ++i)
-        if (v(i) != i * 3.0) return false;
+    for (int i = 1; i <= 9; ++i) v(i) = i * 3.0;
+    for (int i = 1; i <= 9; ++i)
+        if (std::abs(v(i) - i * 3.0) > EPS) return false;
     return true;
 }
 
@@ -187,15 +195,15 @@ int main() {
     for (int i = 1; i <= 20; ++i) {
         bool result = false;
         switch (i) {
-            case 1: result = test1(); break;
-            case 2: result = test2(); break;
-            case 3: result = test3(); break;
-            case 4: result = test4(); break;
-            case 5: result = test5(); break;
-            case 6: result = test6(); break;
-            case 7: result = test7(); break;
-            case 8: result = test8(); break;
-            case 9: result = test9(); break;
+            case 1:  result = test1();  break;
+            case 2:  result = test2();  break;
+            case 3:  result = test3();  break;
+            case 4:  result = test4();  break;
+            case 5:  result = test5();  break;
+            case 6:  result = test6();  break;
+            case 7:  result = test7();  break;
+            case 8:  result = test8();  break;
+            case 9:  result = test9();  break;
             case 10: result = test10(); break;
             case 11: result = test11(); break;
             case 12: result = test12(); break;
@@ -210,4 +218,5 @@ int main() {
         }
         std::cout << "test" << i << ": " << (result ? "PASSED" : "FAILED") << "\n";
     }
+    return 0;
 }

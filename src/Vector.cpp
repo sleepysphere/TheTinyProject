@@ -156,7 +156,6 @@ const double& Vector::operator()(int index) const {
     return mData[index - 1];
 }
 
-
 Vector Vector::operator+() const {
     return *this;
 }
@@ -239,9 +238,14 @@ std::ostream& operator<<(std::ostream& os, const Vector& v) {
         os << v.mData[i];
         if (i + 1 < v.mSize) os << ", ";
     }
-    os << "]";
+    os << ")";
     return os;
 }
+
+Vector operator*(double scalar, const Vector& v) {
+    return v * scalar;
+}
+
 
 double Vector::Norm(int p) const {
     assert(p >= 1);

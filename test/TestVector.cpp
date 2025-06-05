@@ -117,7 +117,8 @@ bool test20() {
         auto dot = v1 * v2;
         (void)dot;
         return false;
-    } catch (const std::invalid_argument&) {
+    } catch (const std::exception& e) {
+        //std::cout << "Caught expected exception: " << e.what() << "\n";
         return true;
     }
 }

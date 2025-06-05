@@ -2,12 +2,11 @@
 #define POSSYMLINSYSTEM_HEADER
 
 #include "LinearSystem.h"
+#include <stdexcept>
 
 class PosSymLinSystem : public LinearSystem {
 public:
     PosSymLinSystem(const Matrix& A, const Vector& b);
-
-    // Override Solve with Conjugate Gradient
     Vector Solve() const override;
 
 private:

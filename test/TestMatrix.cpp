@@ -1,6 +1,10 @@
 #include "../include/Matrix.h"
 #include "../include/Vector.h"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <sstream>
+#include <cmath>        // for std::abs
+#include <stdexcept>    // for exceptions
+#include <string>       // for std::string
 
 const double EPS = 1e-9;
 
@@ -73,9 +77,10 @@ bool test9() {
     Matrix m(2, 2);
     m(1, 1) = 1; m(1, 2) = 2;
     m(2, 1) = 3; m(2, 2) = 4;
-    Vector v(2); v(0) = 1; v(1) = 2;
+    Vector v(2); v[0] = 1; v[1] = 2;
     Vector res = m * v;
-    return std::abs(res(0) - 5) < EPS && std::abs(res(1) - 11) < EPS;
+    return std::abs(res[0] - 5) < EPS 
+        && std::abs(res[1] - 11) < EPS;
 }
 
 bool test10() {

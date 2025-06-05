@@ -1,9 +1,8 @@
 #include "../include/Vector.h"
+#include <algorithm>
 
 #include <iostream>
-#include <cassert>
-#include <cmath>
-#include <iomanip>
+#include <stdexcept>
 
 Vector::Vector() : mSize(0), mData(nullptr) {}
 
@@ -34,8 +33,34 @@ Vector::Vector(const Vector& otherVector) {
 
 Vector::~Vector(){
     delete[] mData;
+// ctor
+Vector::Vector(std::size_t size)
+  : mSize(size), mData(nullptr)
+{
+    if (mSize == 0)
+        throw std::invalid_argument("Vector size must be > 0");
+    mData = new double[mSize];
+    std::fill(mData, mData + mSize, 0.0);
 }
 
+// copy ctor
+Vector::Vector(const Vector& other)
+  : mSize(other.mSize),
+    mData(new double[other.mSize])
+{
+    std::copy(other.mData, other.mData + mSize, mData);
+}
+
+// copy assignment
+Vector& Vector::operator=(const Vector& other) {
+    if (this != &other) {
+        if (mSize != other.mSize) {
+            delete[] mData;
+            mSize = other.mSize;
+            mData = new double[mSize];
+        }
+        std::copy(other.mData, other.mData + mSize, mData);
+    }
 int Vector::size() const {
     return mSize;
 }
@@ -60,6 +85,49 @@ Vector& Vector::operator=(const Vector& otherVector) {
         mData = nullptr;
     }
     return *this;
+}
+
+// dtor
+Vector::~Vector() {
+    delete[] mData;
+}
+
+// zero-based
+double& Vector::operator[](std::size_t idx) {
+    if (idx >= mSize) throw std::out_of_range("Index out of range");
+    return mData[idx];
+}
+const double& Vector::operator[](std::size_t idx) const {
+    if (idx >= mSize) throw std::out_of_range("Index out of range");
+    return mData[idx];
+}
+
+// one-based
+double& Vector::operator()(std::size_t idx) {
+    if (idx < 1 || idx > mSize) throw std::out_of_range("Index out of range");
+    return mData[idx-1];
+}
+const double& Vector::operator()(std::size_t idx) const {
+    if (idx < 1 || idx > mSize) throw std::out_of_range("Index out of range");
+    return mData[idx-1];
+}
+
+// vector sum/diff
+Vector Vector::operator+(const Vector& rhs) const {
+    if (mSize != rhs.mSize) throw std::invalid_argument("Size mismatch");
+    Vector tmp(mSize);
+    for (std::size_t i = 0; i < mSize; ++i)
+        tmp.mData[i] = mData[i] + rhs.mData[i];
+    return tmp;
+}
+
+double Vector::operator*(const Vector& other) const {
+    if (mSize != other.mSize)
+        throw std::invalid_argument("Vectors must be of the same size");
+    double result = 0;
+    for (int i = 0; i < mSize; ++i)
+        result += mData[i] * other.mData[i];
+    return result;
 }
 
 double& Vector::operator[](int index) {
@@ -101,41 +169,75 @@ Vector Vector::operator-() const {
     return result;
 }
 
-Vector Vector::operator+(const Vector& other) const {
-    if (mSize != other.mSize)
-        throw std::invalid_argument("Vectors must be of the same size");
-    Vector result(mSize);
-    for (int i = 0; i < mSize; ++i)
-        result.mData[i] = mData[i] + other.mData[i];
-    return result;
+// dtor
+Vector::~Vector() {
+    delete[] mData;
 }
 
-Vector Vector::operator-(const Vector& other) const {
-    if (mSize != other.mSize)
-        throw std::invalid_argument("Vectors must be of the same size");
-    Vector result(mSize);
-    for (int i = 0; i < mSize; ++i)
-        result.mData[i] = mData[i] - other.mData[i];
-    return result;
+// zero-based
+double& Vector::operator[](std::size_t idx) {
+    if (idx >= mSize) throw std::out_of_range("Index out of range");
+    return mData[idx];
+}
+const double& Vector::operator[](std::size_t idx) const {
+    if (idx >= mSize) throw std::out_of_range("Index out of range");
+    return mData[idx];
 }
 
-Vector Vector::operator*(double scalar) const {
-    Vector result(mSize);
-    for (int i = 0; i < mSize; ++i)
-        result.mData[i] = mData[i] * scalar;
-    return result;
+// one-based
+double& Vector::operator()(std::size_t idx) {
+    if (idx < 1 || idx > mSize) throw std::out_of_range("Index out of range");
+    return mData[idx-1];
+}
+const double& Vector::operator()(std::size_t idx) const {
+    if (idx < 1 || idx > mSize) throw std::out_of_range("Index out of range");
+    return mData[idx-1];
 }
 
-Vector operator*(double scalar, const Vector& v) {
-    return v * scalar;
+// vector sum/diff
+Vector Vector::operator+(const Vector& rhs) const {
+    if (mSize != rhs.mSize) throw std::invalid_argument("Size mismatch");
+    Vector tmp(mSize);
+    for (std::size_t i = 0; i < mSize; ++i)
+        tmp.mData[i] = mData[i] + rhs.mData[i];
+    return tmp;
+}
+Vector Vector::operator-(const Vector& rhs) const {
+    if (mSize != rhs.mSize) throw std::invalid_argument("Size mismatch");
+    Vector tmp(mSize);
+    for (std::size_t i = 0; i < mSize; ++i)
+        tmp.mData[i] = mData[i] - rhs.mData[i];
+    return tmp;
 }
 
-std::ostream& operator<<(std::ostream& os, const Vector& vec) {
+// scalar multiply
+Vector Vector::operator*(double s) const {
+    Vector tmp(mSize);
+    for (std::size_t i = 0; i < mSize; ++i)
+        tmp.mData[i] = mData[i] * s;
+    return tmp;
+}
+
+// dot product
+double Vector::operator*(const Vector& rhs) const {
+    if (mSize != rhs.mSize) throw std::invalid_argument("Size mismatch");
+    double sum = 0;
+    for (std::size_t i = 0; i < mSize; ++i)
+        sum += mData[i] * rhs.mData[i];
+    return sum;
+}
+
+// non-member scalar*vector
+Vector operator*(double s, const Vector& v) {
+    return v * s;
+}
+
+// stream output
+std::ostream& operator<<(std::ostream& os, const Vector& v) {
     os << "[";
-    for (int i = 0; i < vec.mSize; ++i) {
-        os << vec.mData[i];
-        if (i < vec.mSize - 1)
-            os << ", ";
+    for (std::size_t i = 0; i < v.mSize; ++i) {
+        os << v.mData[i];
+        if (i + 1 < v.mSize) os << ", ";
     }
     os << "]";
     return os;

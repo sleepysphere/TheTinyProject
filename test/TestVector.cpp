@@ -85,7 +85,7 @@ bool test12() {
     for (int i = 0; i < 3; ++i) v[i] = -i;
     Vector neg = -v;
     for (int i = 0; i < 3; ++i)
-        if (std::abs(neg[i] + i) > EPS) return false;
+        if (std::abs(neg[i] - i) > EPS) return false;
     return true;
 }
 

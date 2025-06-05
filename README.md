@@ -88,9 +88,33 @@ This project is divided into two main parts and focuses on implementing mathemat
 ```
 ### Build and Run
 
-:warning: Working on this later
+#### Part A
 
-### Results
+- **Vector**
+    - *Build*
+    `g++ src/Vector.cpp test/TestVector.cpp -o test/TestVector`
+    - *Run*
+    `./test/TestVector.exe`
+- **Matrix**
+    - *Build*
+    `g++ -std=c++17 -Iinclude src/Matrix.cpp src/Vector.cpp test/TestMatrix.cpp -o test/TestMatrix`
+    - *Run*
+    `./test/TestMatrix.exe`
+- **Linear System**
+    - *Build*
+    `g++ -std=c++17 -Iinclude src/Vector.cpp src/Matrix.cpp src/LinearSystem.cpp src/PosSymLinSystem.cpp test/TestLinearSystem.cpp -o test/TestLinearSystem.exe`
+    - *Run*
+    `./test/TestLinearSystem.exe`
+
+#### Part B
+
+- **CPU performance prediction**
+    - *Build*
+    `g++ src/CPUprediction.cpp src/LinearSystem.cpp src/Matrix.cpp src/Vector.cpp -o test/TestTrain.exe`
+    - *Run*
+    `./test/TestVector.exe`
+
+### Expected Results
 
 :warning: Working on this later
 
@@ -99,7 +123,7 @@ This project is divided into two main parts and focuses on implementing mathemat
 :warning: Working on this later
 
 ## References
- * UCI Machine Learning Dataset: [Computer Hardware Data](https://archive.ics.uci.edu/ml/datasets/Computer%2BHardware)
+ * UCI Machine Learning Dataset: [*<ins>Computer Hardware Data</ins>*](https://archive.ics.uci.edu/ml/datasets/Computer%2BHardware)
  * Programming 2 Course Materials (VGU - CSE)
 
 ## Notes

@@ -7,9 +7,9 @@
 
 **Members**
 
-*Võ Minh Duy           -   10423028*
-*Đỗ Minh Triết         -   10423114*
-*Phạm Nguyên Phương    -   10423094*
+- *Võ Minh Duy           -   10423028*
+- *Đỗ Minh Triết         -   10423114*
+- *Phạm Nguyên Phương    -   10423094*
 
 **Instructor**
 

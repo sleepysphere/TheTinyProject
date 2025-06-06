@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.6.6)  6 JUN 2025 17:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.6.6)  6 JUN 2025 18:27
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -688,7 +688,8 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count335
 \l__pdf_internal_box=\box134
-) (REPORT.aux)
+)
+No file REPORT.aux.
 \openout1 = `REPORT.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 136.
@@ -709,7 +710,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 136.
 LaTeX Font Info:    ... okay on input line 136.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 136.
 LaTeX Font Info:    ... okay on input line 136.
- (C:\Users\Dell\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+(C:\Users\Dell\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count336
 \scratchdimen=\dimen296
@@ -785,7 +786,8 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 155.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{C:/Users/Dell/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/Dell/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc} <./assets/vgu_logo_large.png>] (REPORT.toc)
+{C:/Users/Dell/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/Dell/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc} <./assets/vgu_logo_large.png>]
+No file REPORT.toc.
 \tf@toc=\write4
 \openout4 = `REPORT.toc'.
 
@@ -793,27 +795,55 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.196 \end{document}
-                     [1
+l.197 \newpage
+               [1
 
-] (REPORT.aux)
- ***********
-LaTeX2e <2023-11-01> patch level 1
-L3 programming layer <2024-01-04>
- ***********
- ) 
+]
+\openout2 = `chapters/1-Introduction.aux'.
+
+ (chapters/1-Introduction.tex
+Chapter 1.
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 6.
+(C:\Users\Dell\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 13.
+ (C:\Users\Dell\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+)
+Overfull \hbox (1.21408pt too wide) in paragraph at lines 13--14
+[]\T1/ptm/m/n/10.95 Chapter 2 pro-vides a de-tailed overview of the de-sign and im-ple-men-ta-tion of the \T1/pcr/m/n/10.95 Vector\T1/ptm/m/n/10.95 , \T1/pcr/m/n/10.95 Matrix\T1/ptm/m/n/10.95 ,
+ []
+
+) [2
+
+
+]
+\openout2 = `chapters/2-Implementation.aux'.
+
+ (chapters/2-Implementation.tex
+Chapter 2.
+
+! Package Listings Error: File `../include/Vector(.h)' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: h)
+
+Enter file name: 
+chapters/2-Implementation.tex:12: Emergency stop.
+<read *> 
+         
+l.12 ...class}, captionpos=b]{../include/Vector.h}
+                                                  ^^M
+*** (cannot \read from terminal in nonstop modes)
+
+ 
 Here is how much of TeX's memory you used:
- 27526 strings out of 474486
- 534731 string characters out of 5744228
+ 27635 strings out of 474486
+ 536996 string characters out of 5744228
  1931542 words of memory out of 5000000
- 49318 multiletter control sequences out of 15000+600000
- 580724 words of font info for 67 fonts, out of 8000000 for 9000
+ 49410 multiletter control sequences out of 15000+600000
+ 587750 words of font info for 74 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,8n,87p,595b,466s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/Dell/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/Dell/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/Dell/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on REPORT.pdf (2 pages, 133099 bytes).
-PDF statistics:
- 44 PDF objects out of 1000 (max. 8388607)
- 5 named destinations out of 1000 (max. 500000)
- 38 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+ 84i,8n,87p,929b,466s stack positions out of 10000i,1000n,20000p,200000b,200000s
+chapters/2-Implementation.tex:12:  ==> Fatal error occurred, no output PDF file produced!

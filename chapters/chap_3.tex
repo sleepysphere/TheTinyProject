@@ -1,0 +1,94 @@
+\chapter{Application: CPU Performance Prediction (Part B)}
+\label{chap:application}
+
+This chapter describes the application of the developed C++ linear algebra library to a practical machine learning problem: the linear regression prediction of relative CPU performance, as outlined in Part B of the project requirements. The implementation is primarily contained within \texttt{main.cpp}.
+
+\section{Problem Description and Dataset}
+\label{sec:dataset_partb} % Changed label to avoid conflict
+The objective is to predict the "published relative performance" (PRP) of computer hardware using several of its key characteristics.
+\begin{itemize}
+    \item \textbf{Dataset Source:} The "Computer Hardware" dataset was obtained from the UCI Machine Learning Repository. This dataset comprises 209 instances, each described by 10 attributes (vendor name, model name, 6 predictive numerical attributes, PRP, and ERP).
+    \item \textbf{Selected Features for the Model:} Following the project specification, 5 specific attributes are used as predictive features for the linear model:
+    \begin{enumerate}
+        \item MYCT: machine cycle time in nanoseconds (integer)
+        \item MMIN: minimum main memory in kilobytes (integer)
+        \item MMAX: maximum main memory in kilobytes (integer)
+        \item CACH: cache memory in kilobytes (integer)
+        \item CHMAX: maximum channels in units (integer)
+    \end{enumerate}
+    The attributes vendor name, model name, CHMIN (minimum channels), and ERP (estimated relative performance from original article) are not used in this specific model formulation.
+    \item \textbf{Target Variable:} The continuous variable to be predicted is PRP (published relative performance).
+    \item \textbf{Linear Regression Model Equation:} The relationship between the features and the target is modeled by the linear equation:
+    $$ PRP = x_1 \cdot \text{MYCT} + x_2 \cdot \text{MMIN} + x_3 \cdot \text{MMAX} + x_4 \cdot \text{CACH} + x_5 \cdot \text{CHMAX} $$
+    The goal is to determine the optimal values for the parameters $x_1, x_2, x_3, x_4, x_5$.
+\end{itemize}
+
+\section{Methodology}
+\label{sec:methodology_partb}
+The \texttt{main.cpp} file orchestrates the data loading, preprocessing, model training, and evaluation.
+
+\subsection{Data Handling and Preprocessing}
+\begin{itemize}
+    \item \textbf{Data Reading:} The program reads data from the \texttt{machine.data} file. Each line is parsed, splitting by commas. The specified feature columns (indices 2, 3, 4, 5, 7) and the target column (index 8) are extracted and converted to \texttt{double}. Error handling for invalid data conversion or incorrect column counts per line is included, with problematic lines being skipped and warnings issued.
+    \item \textbf{Train-Test Split:} The dataset of 209 instances is divided into a training set and a testing set. 80\% of the data (167 instances) is allocated for training, and the remaining 20\% (42 instances) for testing. This split is performed sequentially: the first 167 records form the training set, and the subsequent 42 records constitute the testing set. These are stored in \texttt{Matrix} objects (\texttt{X\_train}, \texttt{X\_test}) and \texttt{Vector} objects (\texttt{y\_train}, \texttt{y\_test}).
+\end{itemize}
+
+\subsection{Model Parameter Estimation}
+The model parameters ($x_i$, collectively denoted as vector $\beta$) are determined using the training data.
+\begin{sloppypar}
+\begin{itemize}
+    \item \textbf{Normal Equations:} The linear regression problem $X_{train}\beta = y_{train}$ is typically over-determined. The least-squares solution for $\beta$ is found by solving the normal equations:
+    $$ (X_{train}^T X_{train}) \beta = X_{train}^T y_{train} $$
+    Let $A_{ls} = X_{train}^T X_{train}$ and $b_{ls} = X_{train}^T y_{train}$. The system becomes $A_{ls}\beta = b_{ls}$.
+    \item \textbf{Solving the System:} The \texttt{main.cpp} program constructs $A_{ls}$ (a $5 \times 5$ matrix) and $b_{ls}$ (a $5 \times 1$ vector) using the implemented \texttt{Matrix::Transpose()}, \texttt{Matrix::operator*()}, and \texttt{Vector::operator*()} methods.
+    \item An instance of \texttt{LinearSystem} is then created using $A_{ls}$ and $b_{ls}$. The \texttt{LinearSystem::Solve()} method (which employs Gaussian elimination) is invoked to compute the parameter vector $\beta$.
+\end{itemize}
+\end{sloppypar}
+
+\subsection{Model Evaluation}
+\begin{itemize}
+    \item \textbf{Prediction:} Using the obtained parameters $\beta$, predictions are made for both the training set ($y_{pred\_train} = X_{train} \beta$) and the testing set ($y_{pred\_test} = X_{test} \beta$). These matrix-vector multiplications are handled by the overloaded operators in the \texttt{Matrix} and \texttt{Vector} classes.
+    \item \textbf{Root Mean Square Error (RMSE):} The model's predictive accuracy is assessed using the RMSE criterion, calculated as $ RMSE = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (y_{actual,i} - y_{pred,i})^2} $. The RMSE is computed separately for the training and testing sets to gauge both model fit and generalization ability.
+\end{itemize}
+
+\section{Results and Discussion}
+\label{sec:results_partb_discussion} % Changed label
+
+\begin{figure}[H]
+\lstinputlisting[linerange={2-29}, caption={C++ program output: model parameters and RMSE values}, captionpos=b]{../log.txt}
+\end{figure}
+
+\subsection{Determined Model Parameters}
+The C++ program outputs the following model parameters:
+\begin{verbatim}
+Model Parameters (x1 to x5):
+x1 (MYCT): -0.0077
+x2 (MMIN): 0.0209
+x3 (MMAX): 0.0022
+x4 (CACH): 0.8522
+x5 (CHMAX): -0.0262
+\end{verbatim}
+These coefficients quantify the estimated linear impact of each feature on PRP. For instance, CACH has the largest positive coefficient, suggesting it's a strong positive predictor within this model. MYCT and CHMAX have small negative coefficients.
+
+\subsection{Performance Metrics (RMSE)}
+The RMSE values obtained from the C++ execution are:
+\begin{verbatim}
+Root Mean Square Error (RMSE) on Testing Set: 150.8333
+Root Mean Square Error (RMSE) on Training Set: 44.6323
+\end{verbatim}
+\begin{itemize}
+    \item The training RMSE of 44.63 indicates the model's average prediction error on the data it was trained on.
+    \item The testing RMSE of 150.83 indicates the model's average prediction error on unseen data. This value is considerably higher than the training RMSE.
+\end{itemize}
+
+\subsection{Discussion of Results}
+The significant discrepancy between the training RMSE and the testing RMSE suggests that the model might be overfitting the training data. While it has learned the patterns in the training set to achieve a relatively low error, it does not generalize as effectively to new, unseen data from the testing set. The absolute value of the testing RMSE (150.83) is also quite high relative to typical PRP values (which range from single digits to over 1000 in the dataset, with a mean around 100-200), indicating that the predictions can be substantially off.
+
+This outcome could be due to several factors:
+\begin{itemize}
+    \item The inherent complexity of CPU performance prediction may not be fully captured by a simple linear model based on these five features.
+    \item The dataset size (209 instances, 167 for training) might be small for reliably training a model that generalizes well.
+    \item The specific features chosen, while specified by the task, might not be the most optimal set, or interactions between features might be important but are not captured by this linear model.
+    \item The lack of regularization might contribute to overfitting.
+\end{itemize}
+The successful application of the custom C++ classes to this regression problem demonstrates their utility. However, for a more robust predictive model in a real-world scenario, further investigation into feature engineering, model selection, and cross-validation would be necessary.

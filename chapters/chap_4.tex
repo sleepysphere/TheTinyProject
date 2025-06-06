@@ -1,0 +1,48 @@
+\chapter{Conclusion}
+\label{chap:conclusion}
+
+This project successfully addressed the requirements outlined in the project specification, encompassing both the development of a foundational C++ library for linear algebra and its application to a linear regression task.
+
+\section{Summary of Achievements}
+\begin{itemize}
+    \item \textbf{Part A: Core Linear Algebra Classes:}
+    \begin{itemize}
+        \item A robust \texttt{Vector} class was implemented, featuring dynamic memory management, overloaded operators for standard vector arithmetic (including scalar operations), and both 0-based and 1-based indexing with bounds checking.
+        \item A comprehensive \texttt{Matrix} class was developed, providing functionalities for memory allocation, various constructors (including a deep copy constructor), operator overloading for matrix arithmetic (matrix-matrix, matrix-vector, scalar-matrix). Crucially, methods for calculating the determinant, inverse (for square matrices), and Moore-Penrose pseudo-inverse (for general matrices) were implemented, addressing the need to handle both well-posed and ill-posed systems, including non-square ones.
+        \item A \texttt{LinearSystem} class was created to solve $Ax=b$ for square matrices using Gaussian elimination with partial pivoting. Proper attention was given to class design, including constructors and memory management considerations.
+        \item A derived class, \texttt{PosSymLinSystem}, was implemented to efficiently solve symmetric positive definite systems using the Conjugate Gradient method, showcasing polymorphism by overriding the virtual \texttt{Solve} method. This class also includes a check for matrix symmetry.
+    \end{itemize}
+    \item \textbf{Part B: Linear Regression Application:}
+    \begin{itemize}
+        \item The implemented classes were successfully utilized to perform linear regression on the UCI Computer Hardware dataset.
+        \item The task involved selecting appropriate features as per the problem description, splitting the data into training (80\%) and testing (20\%) sets, and formulating the problem using normal equations.
+        \item The \texttt{LinearSystem} class was used to solve these normal equations to determine the model parameters.
+        \item The model's performance was evaluated using Root Mean Square Error (RMSE) on both training and testing sets, providing insights into the model's fit and generalization capabilities. The results showed a notable difference between training and testing RMSE, suggesting potential overfitting or limitations of the simple linear model for this dataset.
+    \end{itemize}
+\end{itemize}
+
+\section{Challenges and Learning Outcomes}
+The project provided substantial learning opportunities in several areas of C++ programming and numerical methods:
+\begin{sloppypar}
+\begin{itemize}
+    \item \textbf{Object-Oriented Design:} Designing and implementing interconnected classes (\texttt{Vector}, \texttt{Matrix}, \texttt{LinearSystem}, \texttt{PosSymLinSystem}) with appropriate encapsulation, inheritance, and polymorphism.
+    \item \textbf{Memory Management:} Gaining hands-on experience with dynamic memory allocation (\texttt{new}, \texttt{delete}, \texttt{delete[]}) and the importance of constructors, destructors, and copy semantics (Rule of Three/Five).
+    \item \textbf{Operator Overloading:} Implementing intuitive interfaces for mathematical objects through operator overloading.
+    \item \textbf{Numerical Algorithms:} Implementing core numerical linear algebra algorithms such as Gaussian elimination with pivoting, the Conjugate Gradient method, and methods for matrix determinant, inverse, and pseudo-inverse. This involved understanding their mathematical basis and considerations for numerical stability.
+    \item \textbf{Application to Machine Learning:} Bridging the gap between a custom numerical library and a practical data analysis task, reinforcing the understanding of how linear algebra underpins machine learning techniques like linear regression.
+\end{itemize}
+\end{sloppypar}
+A key challenge was ensuring numerical stability and correctness in the implemented algorithms, particularly for matrix inversion and system solving. Debugging memory management issues and ensuring correct operator behavior also required careful attention.
+
+\section{Potential Future Work}
+The current project forms a strong basis for further development. Potential enhancements could include:
+\begin{itemize}
+    \item \textbf{Advanced Numerical Techniques:} Incorporating more sophisticated matrix decompositions for solving linear systems and other computations, which can offer better stability or efficiency for certain types of matrices.
+    \item \textbf{Sparse Matrix Support:} Extending the library to handle sparse matrices efficiently using specialized storage formats and algorithms.
+    \item \textbf{Templated Classes:} Converting \texttt{Vector} and \texttt{Matrix} to class templates to support different numerical types.
+    \item \textbf{Enhanced Error Handling:} Replacing assertions with a more robust exception handling mechanism for runtime errors.
+    \item \textbf{Regularization Techniques:} Explicitly implementing regularization methods like Tikhonov regularization or Ridge regression within the linear system solvers or as part of the linear regression application framework.
+    \item \textbf{Broader Machine Learning Applications:} Extending the Part B application to include more comprehensive model evaluation, feature scaling, or comparison with other regression models.
+\end{itemize}
+
+To sum up, this project has successfully demonstrated the ability to design, implement, and apply a C++ library for fundamental linear algebra operations. The work fulfills the specified requirements and provides a valuable educational experience in software development and numerical computation.

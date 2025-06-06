@@ -1,0 +1,17 @@
+\chapter{Introduction}
+\label{chap:introduction}
+
+This report details the development of a C++ project focused on numerical linear algebra and its application to a practical machine learning problem. The project involved two main parts.
+
+The first part centered on the creation of fundamental C++ classes for handling vectors and matrices. These classes were built with essential functionalities such as memory management, operator overloading for common algebraic operations, and methods for matrix computations like determinant, inverse, and pseudo-inverse. Based on these foundational classes, a \texttt{LinearSystem} class was developed to solve systems of linear equations ($Ax=b$) using Gaussian elimination with pivoting. Additionally, a specialized derived class, \texttt{PosSymLinSystem}, was implemented to handle positive definite symmetric linear systems using the Conjugate Gradient method. The project also addressed solving under-determined or over-determined linear systems.
+
+The second part of the project applied these custom-built classes to predict relative CPU performance using the Computer Hardware dataset from the UCI Machine Learning Repository. This entailed setting up a linear regression model, partitioning the dataset into training and testing sets, employing the implemented linear system solvers to determine model parameters, and evaluating the model's performance with the Root Mean Square Error (RMSE).
+
+This report is structured as follows:
+\begin{itemize}
+    \item Chapter 2 provides a detailed overview of the design and implementation of the \texttt{Vector}, \texttt{Matrix}, \texttt{LinearSystem}, and \texttt{PosSymLinSystem} classes.
+    \item Chapter 3 describes the application of these classes to the linear regression task, covering data processing, model training, and evaluation of results.
+    \item Chapter 4 concludes the report with a summary of the work accomplished and potential future enhancements.
+\end{itemize}
+
+The C++ implementation uses standard libraries and follows object-oriented programming principles to create a reusable and robust set of tools for linear algebra computations.

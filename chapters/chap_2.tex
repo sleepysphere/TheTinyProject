@@ -1,0 +1,141 @@
+\chapter{Core Classes Implementation (Part A)}
+\label{chap:core_classes}
+
+This chapter details the design and implementation of the core C++ classes for vector and matrix operations, as well as classes for solving linear systems, as required by Part A of the project specification.
+
+\section{Vector Class}
+\label{sec:vector_class}
+
+The \texttt{Vector} class was developed to represent mathematical vectors and perform common vector operations. Its implementation in \texttt{Vector.h} and \texttt{Vector.cpp} addresses the specified requirements.
+
+\begin{figure}
+\lstinputlisting[language=C++, linerange={5-35}, caption={Implementation of the \texttt{Vector} class}, captionpos=b]{../include/Vector.h}
+\end{figure}
+
+\subsection{Features and Implementation}
+Key features and implementation details include:
+\begin{itemize}
+    \item \textbf{Memory Management:} The class includes constructors and a destructor to handle dynamic memory allocation and deallocation for the vector's data.
+        \begin{itemize}
+            \item A default constructor \texttt{Vector()} creating an empty vector.
+            \item A constructor \texttt{Vector(int size)} that allocates memory for a given size and initializes elements to zero.
+            \item A copy constructor \texttt{Vector} performing a deep copy.
+            \item The destructor \texttt{\textasciitilde Vector()} ensures that dynamically allocated memory for \texttt{mData} is freed.
+        \end{itemize}
+    The private members are \texttt{mSize} (the size of the array) and \texttt{mData} (a pointer to a \texttt{double} storing the vector elements).
+
+    \item \textbf{Operator Overloading:}
+    \begin{itemize}
+        \item Assignment operator (\texttt{=}) is overloaded for proper deep copying of vector data and handling self-assignment and different sizes.
+        \item Unary operators (\texttt{+}) (returns a copy of the vector) and (\texttt{-}) (returns a new vector with negated elements) are overloaded.
+        \item Binary operators (\texttt{+}) for vector addition, (\texttt{-}) for vector subtraction, and (\texttt{*}) for scalar multiplication are overloaded. Assertions (\texttt{assert}) are used to ensure size compatibility in vector-vector operations.
+        \item The square bracket operator (\texttt{[]}) is overloaded for 0-based access. It provides a check that the index lies within the correct range using \texttt{assert}. Both \texttt{const} and non-\texttt{const} versions are provided.
+        \item The round bracket operator (\texttt{()}) is overloaded for 1-based access. It also uses \texttt{assert} for range checking. Both \texttt{const} and non-\texttt{const} versions are provided.
+        \item An overloaded \texttt{operator<<} (friend function) allows printing vectors to an output stream.
+    \end{itemize}
+    \item \textbf{Norm Calculation:} A public method \texttt{double Norm(int p = 2) const} calculates the p-norm of the vector (defaulting to Euclidean norm L2).
+    \item \textbf{Accessor:} \texttt{int GetSize() const} returns the size of the vector.
+\end{itemize}
+
+\section{Matrix Class}
+\label{sec:matrix_class}
+
+The \texttt{Matrix} class, implemented in \texttt{Matrix.h} and \texttt{Matrix.cpp}, is designed for representing and manipulating 2D matrices.
+
+\begin{figure}
+\lstinputlisting[language=C++, linerange={7-48}, caption={Implementation of the \texttt{Matrix} class}, captionpos=b]{../include/Matrix.h}
+\end{figure}
+
+\subsection{Features and Implementation}
+\begin{itemize}
+    \item \textbf{Private Members:} The class stores matrix dimensions as private integer members \texttt{mNumRows} and \texttt{mNumCols}, and the matrix data using \texttt{mData}, a \texttt{double**} (pointer to a pointer of doubles). Helper private methods \texttt{AllocateMemory()} and \texttt{DeallocateMemory()} manage the 2D dynamic array.
+    \item \textbf{Constructors and Destructor:}
+        \begin{sloppypar}
+        \begin{itemize}
+            \item A default constructor \texttt{Matrix()} creating an empty matrix.
+            \item A constructor \texttt{Matrix(int numRows, int numCols)} that accepts the number of rows and columns, allocates memory using \texttt{AllocateMemory()}, and initializes all entries to zero.
+            \item An overridden copy constructor \texttt{Matrix(const Matrix\& otherMatrix)} that performs a deep copy of the matrix data.
+            \item An overridden destructor \texttt{\textasciitilde Matrix()} that deallocates memory using \texttt{DeallocateMemory()}.
+        \end{itemize}
+        \end{sloppypar}
+    \item \textbf{Accessors:} Public methods \texttt{GetNumberOfRows()} and \texttt{GetNumberOfColumns()} are provided.
+    \item \textbf{Operator Overloading:}
+        \begin{itemize}
+            \item Overloaded assignment operator \texttt{operator=} for deep copying.
+            \item The round bracket operator (\texttt{()}) is overloaded for 1-based access to matrix entries. Both \texttt{const} and non-\texttt{const} versions are provided, with \texttt{assert} for index validation.
+            \item Unary (\texttt{+},\texttt{-}) and binary operators (\texttt{+},\texttt{-},\texttt{*}) are overloaded for matrix addition, subtraction, matrix-matrix multiplication, scalar-matrix multiplication, and matrix-vector multiplication (\texttt{matrix * vector}). \texttt{assert} statements ensure dimensional compatibility.
+            \item An overloaded \texttt{operator<<} (friend function) allows printing matrices to an output stream.
+        \end{itemize}
+    \item \textbf{Matrix Operations:}
+        \begin{itemize}
+            \item \texttt{Matrix Transpose() const}: Computes the transpose.
+            \item \texttt{double Determinant() const}: Computes the determinant of a square matrix using recursive cofactor expansion. Asserts matrix is square and non-empty.
+            \item \texttt{Matrix Inverse() const}: Computes the inverse of a square, non-singular matrix using the adjugate matrix method. Asserts matrix is square, non-empty, and determinant is non-negligible.
+            \item \texttt{Matrix PseudoInverse() const}: Computes the Moore-Penrose pseudo-inverse. It handles $m \ge n$ via $(A^T A)^{-1} A^T$ and $m < n$ via $A^T (A A^T)^{-1}$. Includes singularity checks for $A^T A$ or $A A^T$.
+            \item Static methods \texttt{SwapRows} and \texttt{SwapRowsMatrixOnly} are utility functions, likely intended for use in solvers.
+        \end{itemize}
+\end{itemize}
+
+\section{LinearSystem Class}
+\label{sec:linearsystem_class}
+
+Implemented in \texttt{LinearSystem.h} and \texttt{LinearSystem.cpp}, this class is designed to solve $Ax=b$ where $A$ is square and non-singular.
+
+\begin{figure}[H]
+\lstinputlisting[language=C++, linerange={6-26}, caption={Implementation of the \texttt{LinearSystem} class}, captionpos=b]{../include/LinearSystem.h}
+\end{figure}
+
+\subsection{Features and Implementation}
+\begin{sloppypar}
+\begin{itemize}
+    \item \textbf{Data Members (Protected):} \texttt{mSize} (integer), \texttt{mpA} (\texttt{Matrix*}), \texttt{mpb} (\texttt{Vector*}), and \texttt{mOwnsPointers} (bool).
+    \item \textbf{Constructors and Destructor:}
+        \begin{itemize}
+            \item The primary constructor \texttt{LinearSystem(Matrix\& A, Vector\& b, bool copyData = true)} initializes the system. \texttt{mSize} is derived from $A$. Asserts ensure $A$ is square and compatible with $b$. \texttt{copyData} controls whether $A$ and $b$ are copied or pointed to.
+            \item A copy constructor \texttt{LinearSystem(const LinearSystem\& other)} is provided for deep copying if data is owned.
+            \item A default constructor \texttt{LinearSystem()} is defined (initializes to empty state), but the project description suggested preventing its use if a specialized constructor is primary. The task seems to have allowed it.
+            \item The destructor \texttt{\textasciitilde LinearSystem()} deallocates \texttt{mpA} and \texttt{mpb} if \texttt{mOwnsPointers} is true.
+        \end{itemize}
+    \item \textbf{Solver Method:}
+        \begin{itemize}
+            \item A public \texttt{virtual Vector Solve()} method implements Gaussian elimination with partial pivoting for numerical stability. It creates working copies of the matrix and RHS vector.
+            \item It returns a \texttt{Vector} containing the solution $x$.
+            \item Includes warnings for nearly singular matrices during elimination and back substitution, returning a zero vector in such cases.
+        \end{itemize}
+    \item \textbf{Accessors:} \texttt{GetMatrix()} and \texttt{GetRHSVector()} return copies of the matrix $A$ and vector $b$.
+\end{itemize}
+\end{sloppypar}
+
+\section{PosSymLinSystem Class}
+\label{sec:possymlinSystem_class}
+
+The \texttt{PosSymLinSystem} class (\texttt{PosSymLinSystem.h}, \texttt{PosSymLinSystem.cpp}) derives from \texttt{LinearSystem} for solving symmetric positive definite systems.
+
+\begin{figure}[H]
+\lstinputlisting[language=C++, linerange={5-14}, caption={Implementation of the \texttt{PosSymLinSystem} class}, captionpos=b]{../include/PosSymLinSystem.h}
+\end{figure}
+
+\subsection{Features and Implementation}
+\begin{sloppypar}
+\begin{itemize}
+    \item \textbf{Inheritance:} Publicly inherits from \texttt{LinearSystem}. Member data of \texttt{LinearSystem} is correctly \texttt{protected} for access.
+    \item \textbf{Constructor:} \texttt{PosSymLinSystem(Matrix\& A, Vector\& b, bool copyData = true)} calls the base constructor. It includes an \texttt{assert} to check if $A$ is symmetric via the private helper \texttt{IsSymmetric(const Matrix\& A) const}. A positive definiteness check is not performed.
+    \item \textbf{Overridden Solve Method:} The \texttt{virtual Vector Solve() override} method implements the Conjugate Gradient (CG) iterative algorithm.
+        \begin{itemize}
+            \item It initializes $x_0$ (to zero vector), $r_0 = b - Ax_0$, $p_0 = r_0$.
+            \item Iteratively updates $x$, $r$, and $p$ until the norm of the residual $r$ is below a tolerance ($10^{-9}$) or a maximum number of iterations ($2 \times \text{mSize}$) is reached.
+            \item Includes a warning if CG denominator for $\alpha$ is near zero.
+            \item Prints a message if convergence is not achieved.
+        \end{itemize}
+\end{itemize}
+\end{sloppypar}
+
+\section{Solving Non-Square Systems}
+\label{sec:nonsquare_systems}
+The project required addressing solutions for under-determined or over-determined linear systems where $A$ is not square.
+\begin{itemize}
+    \item The \texttt{Matrix::PseudoInverse()} method provides the primary mechanism for this. It computes the Moore-Penrose pseudo-inverse, enabling least-squares solutions for over-determined systems or minimum-norm solutions for under-determined systems.
+    \item For the linear regression in Part B, an over-determined system $X\beta = y$ is solved by converting it to the normal equations $X^T X \beta = X^T y$. The matrix $X^T X$ is square, and this system is then solved using \texttt{LinearSystem::Solve()}. This approach implicitly uses the concept of the pseudo-inverse, as $\beta = (X^T X)^{-1} X^T y$.
+    \item Tikhonov regularization, though mentioned as an option in the requirements, was not explicitly implemented as a separate solver in the provided C++ code for $Ax=b$ where $A$ is non-square. The focus was on the pseudo-inverse capability and the normal equations for the specific application.
+\end{itemize}
+The implemented classes provide a solid foundation for various linear algebra tasks, fulfilling the requirements of Part A.

@@ -55,36 +55,44 @@ This project demonstrates proficiency in dynamic memory management, class design
 ## 3. Project Structure
 ```
 .
-├── CMakeLists.txt
-├── LICENSE
-├── README.md
-├── REPORT.md
-├── assets
-│   ├── logo.png
-│   └── tinyProject1.pdf
-├── build.bat
-├── data
-│   ├── Index
-│   ├── machine.data
-│   └── machine.names
-├── include
-│   ├── LinearSystem.h
-│   ├── Matrix.h
-│   ├── PosSymLinSystem.h
-│   └── Vector.h
-├── src
-│   ├── CPUprediction.cpp
-│   ├── DataParser.cpp
-│   ├── LinearSystem.cpp
-│   ├── Matrix.cpp
-│   ├── PosSymLinSystem.cpp
-│   ├── Regression.cpp
-│   ├── Vector.cpp
-│   └── main.cpp
-└── test
-    ├── TestLinearSystem.cpp
-    ├── TestMatrix.cpp
-    └── TestVector.cpp
+│   build.bat
+│   CMakeLists.txt
+│   LICENSE
+│   README.md
+│   REPORT.md
+│   run.bat
+│   
+├───.vscode
+│       launch.json
+│       settings.json
+│       tasks.json
+│       
+├───data
+│       Index
+│       machine.data
+│       machine.names
+│       
+├───include
+│       LinearSystem.h
+│       Matrix.h
+│       PosSymLinSystem.h
+│       Vector.h
+│       
+├───prediction
+│       model.txt
+│       rmse.log
+│       
+├───src
+│       LinearSystem.cpp
+│       main.cpp
+│       Matrix.cpp
+│       PosSymLinSystem.cpp
+│       Vector.cpp
+│       
+└───test
+        TestLinearSystem.cpp
+        TestMatrix.cpp
+        TestVector.cpp
 ```
 
 - `include/`: Header files for all core classes  

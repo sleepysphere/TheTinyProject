@@ -127,7 +127,7 @@ void renumberEpochsInLog(const std::string& logPath) {
 int main(int argc, char* argv[]){
     try {
         // prepare output directory in workspace root
-        const std::string outDir = "Prediction";
+        const std::string outDir = "prediction";
         std::filesystem::create_directories(outDir);
         // prepare model file path and clear previous contents
         const std::string modelFile = outDir + "/model.txt";

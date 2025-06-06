@@ -1,10 +1,10 @@
 @echo off
-echo 🔨 Compiling...
-g++ -Iinclude src\vector.cpp src\Matrix.cpp src\LinearSystem.cpp src\PosSymLinSystem.cpp src\main.cpp -o test\main.exe
+echo Compiling...
+g++ -Iinclude src\Vector.cpp src\Matrix.cpp src\LinearSystem.cpp src\PosSymLinSystem.cpp src\main.cpp -o test\main.exe
 
 if %errorlevel% equ 0 (
-    echo 🚀 Running...
+    echo Running...
     test\main.exe
 ) else (
-    echo ❌ Compilation failed.
+    echo Compilation failed.
 )

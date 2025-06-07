@@ -20,100 +20,178 @@
 
 ## 1. Introduction
 
-The Tiny Project is a comprehensive application of object-oriented programming and numerical linear algebra. It is divided into two parts: (A) implementing a custom C++ linear algebra library and (B) applying this library to solve a real-world regression problem using CPU performance data.
+**The Tiny Project** is a two-part initiative combining object-oriented C++ design with numerical linear algebra to address a real-world regression task.
 
-The project demonstrates practical understanding of C++ features such as dynamic memory allocation, operator overloading, class inheritance, and abstraction through a modular and test-driven development approach.
+- **Part A**: Develop a custom linear algebra library using C++.  
+- **Part B**: Apply the library to perform multiple linear regression on CPU performance data.
+
+This project demonstrates proficiency in dynamic memory management, class design, operator overloading, and numerical algorithms.
 
 ---
 
 ## 2. Objectives
 
-### Part A: Numerical Linear Algebra Library
+### 🔹 Part A: Linear Algebra Library
 
-- Design and implement:
+- Implement:
   - `Vector` class
   - `Matrix` class
-  - `LinearSystem` and derived `PosSymLinSystem` class
+  - `LinearSystem` and `PosSymLinSystem` classes
 - Support:
-  - Vector and matrix arithmetic
-  - Determinants, inverse, and pseudo-inverse
-  - Gaussian elimination and conjugate gradient method
+  - Arithmetic operations for vectors and matrices
+  - Determinant, inverse, and pseudo-inverse calculations
+  - Gaussian elimination and conjugate gradient methods
 - Handle:
-  - Underdetermined and overdetermined systems using regularization techniques
+  - Regularization techniques for non-square systems
 
-### Part B: Real-World Application via Regression
+### 🔹 Part B: Regression with CPU Data
 
-- Perform multiple linear regression on the UCI Computer Hardware dataset
-- Use the linear system solvers from Part A to compute model parameters
-- Evaluate using RMSE on test data
-
----
-
-## 3. Design & Implementation
-
-### 3.1 Vector Class
-
-- Encapsulates a one-dimensional array with dynamic memory
-- Supports arithmetic operations, 1-based indexing, and boundary checks
-- Includes:
-  - Overloaded operators
-  - Specialized constructor and destructor
-  - Error-checking mechanisms
-
-### 3.2 Matrix Class
-
-- Represents a 2D dynamic matrix with row pointers
-- Key features:
-  - Copy constructor and destructor
-  - Arithmetic and scalar operations
-  - Determinant and inverse methods
-  - Pseudo-inverse using SVD or similar techniques
-
-### 3.3 LinearSystem & PosSymLinSystem
-
-- `LinearSystem` solves square systems via Gaussian Elimination with pivoting
-- `PosSymLinSystem` extends it for symmetric positive-definite matrices using the conjugate gradient method
-- Ensures safe usage through constructor restrictions and protected inheritance
+- Perform multiple linear regression on the [UCI Computer Hardware dataset](https://archive.ics.uci.edu/ml/datasets/Computer%2BHardware)
+- Predict target values using the custom solver
+- Evaluate accuracy using Root Mean Squared Error (RMSE)
 
 ---
 
-## 4. Regression Model on CPU Data
+## 3. Project Structure
+```
+.
+│   build.bat
+│   CMakeLists.txt
+│   LICENSE
+│   README.md
+│   REPORT.md
+│   run.bat
+│   
+├───.vscode
+│       launch.json
+│       settings.json
+│       tasks.json
+│       
+├───data
+│       Index
+│       machine.data
+│       machine.names
+│       
+├───include
+│       LinearSystem.h
+│       Matrix.h
+│       PosSymLinSystem.h
+│       Vector.h
+│       
+├───prediction
+│       model.txt
+│       rmse.log
+│       
+├───src
+│       LinearSystem.cpp
+│       main.cpp
+│       Matrix.cpp
+│       PosSymLinSystem.cpp
+│       Vector.cpp
+│       
+└───test
+        TestLinearSystem.cpp
+        TestMatrix.cpp
+        TestVector.cpp
+```
 
-- Dataset: [UCI Computer Hardware](https://archive.ics.uci.edu/ml/datasets/Computer%2BHardware)
-- Goal: Predict `PRP` (Published Relative Performance) based on six numerical features
-- Model:
-  \[
-  PRP = x_1 \cdot MYCT + x_2 \cdot MMIN + x_3 \cdot MMAX + x_4 \cdot CACH + x_5 \cdot CHMIN + x_6 \cdot CHMAX
-  \]
-- Method:
-  - Normalize data
-  - Formulate as Ax = b
-  - Use solver to compute x
-  - Evaluate on 20% test split using RMSE
+- `include/`: Header files for all core classes  
+- `src/`: Source code implementations  
+- `test/`: Unit and integration test cases  
+- `data/`: Raw dataset for regression  
+- `main.cpp`: Entry point for the regression application  
+- `report.md`: This project report  
 
 ---
 
-## 5. Testing & Validation
+## 4. Design & Implementation
 
-<h5 style='color:red'> WORKING ON THIS LATER </h5>
+### 4.1 Vector Class
+
+- Dynamic 1D array with proper memory management
+- Features:
+  - Operator overloading (`+`, `-`, `*`, etc.)
+  - 1-based indexing with bounds checking
+  - Constructors, destructor, and copy semantics
+
+### 4.2 Matrix Class
+
+- 2D array using row-pointer representation
+- Capabilities:
+  - Matrix arithmetic and scalar ops
+  - Determinant and (pseudo-)inverse
+  - Copy constructor, deep copy, destructor
+
+### 4.3 Linear System Solvers
+
+- **LinearSystem**:  
+  - Solves general square systems using Gaussian Elimination with partial pivoting
+- **PosSymLinSystem**:  
+  - Inherits from `LinearSystem`, optimized for symmetric positive-definite matrices
+  - Uses the Conjugate Gradient method for efficiency
 
 ---
 
-## 6. Results
+## 5. Regression Model on CPU Data
 
-<h5 style='color:red'> WORKING ON THIS LATER </h5>
+### Dataset
+
+- Source: [**<p style="color:rgb(127,255,255);">UCI Computer Hardware</p>**](https://archive.ics.uci.edu/ml/datasets/Computer%2BHardware)
+- Features: `MYCT`, `MMIN`, `MMAX`, `CACH`, `CHMIN`, `CHMAX`  
+- Target: `PRP` (Published Relative Performance)
+
+### Approach
+
+1. Normalize input features  
+2. Construct system `Ax = b` for regression  
+3. Solve using custom solvers (`LinearSystem` or `PosSymLinSystem`)  
+4. Split data 80/20 into training and test sets  
+5. Evaluate prediction with RMSE:
+
+\[
+RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}
+\]
 
 ---
 
-## 7. Conclusion
+## 6. Testing & Validation
 
-This project solidified our understanding of both object-oriented C++ and numerical computation. We built foundational tools from the ground up and applied them to a real-world data science problem.
+> 🔧 **Status**: _In Progress_
 
-We learned how mathematical theory can be translated into efficient code and how to manage complexity through modular class design. This practical integration of C++ and linear algebra has been both challenging and rewarding.
+Planned testing includes:
+
+- 20+ test functions per class in the `test/` folder
+- Boundary, arithmetic, and memory leak checks
+- Regression accuracy on known CPU entries
 
 ---
 
-## 8. References
+## 7. Results
 
-- UCI Machine Learning Repository: [<blue>Computer Hardware Data</blue>](https://archive.ics.uci.edu/ml/datasets/Computer%2BHardware)
-- Lecture materials and lab exercises from Programming 2 (VGU)
+> 📊 **Status**: _In Progress_
+
+Will include:
+
+- Learned model coefficients  
+- RMSE score  
+- Visual comparison between predicted vs actual values
+
+---
+
+## 8. Conclusion
+
+This project provided practical experience in both C++ systems programming and applied mathematics. We developed core computational tools from scratch and applied them to meaningful data.
+
+### Key Learnings:
+
+- Translating mathematical models into C++ class hierarchies
+- Memory-safe implementation of linear algebra tools
+- Application of theoretical methods (like Gaussian Elimination and CG) to solve real regression problems
+
+---
+
+## 9. References
+
+- UCI Machine Learning Repository: [Computer Hardware Data](https://archive.ics.uci.edu/ml/datasets/Computer%2BHardware)  
+- Programming 2 course materials (VGU)  
+- Numerical Linear Algebra — Lecture Notes & Supplemental Readings

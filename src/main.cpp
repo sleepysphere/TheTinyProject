@@ -127,7 +127,7 @@ void renumberEpochsInLog(const std::string& logPath) {
 int main(int argc, char* argv[]){
     try {
         // prepare output directory in workspace root
-        const std::string outDir = "Prediction";
+        const std::string outDir = "prediction";
         std::filesystem::create_directories(outDir);
         // prepare model file path and clear previous contents
         const std::string modelFile = outDir + "/model.txt";
@@ -142,8 +142,8 @@ int main(int argc, char* argv[]){
         // load data
         int N;
         CPURecord* all = loadData("data/machine.data", N);
-        // determine epochs from command line (default 1)
-        int epochs = 1;
+        // determine epochs from command line (default 20)
+        int epochs = 20;
         if (argc >= 2) epochs = std::max(1, std::atoi(argv[1]));
         // online model coefficients (initially zero)
         Vector x_old;
@@ -246,9 +246,8 @@ int main(int argc, char* argv[]){
             // renumber epochs in log after each epochs complete
             renumberEpochsInLog(outDir + "/rmse.log");
 
-            // pause before next epoch
-            // pause for 2 seconds before next epoch
-            std::this_thread::sleep_for(std::chrono::seconds(2));
+            // pause for 1 seconds before next epoch
+            // std::this_thread::sleep_for(std::chrono::seconds(01));
         }
 
 

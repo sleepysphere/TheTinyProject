@@ -14,6 +14,7 @@
 #include "../include/Matrix.h"
 #include "../include/Vector.h"
 #include "../include/LinearSystem.h"
+#include "../include/PosSymLinSystem.h"
 
 using namespace std;
 
@@ -142,9 +143,11 @@ int main(int argc, char* argv[]){
         // load data
         int N;
         CPURecord* all = loadData("data/machine.data", N);
-        // determine epochs from command line (default 20)
+        // determine epochs from command line (default 20) and optional regularization λ
         int epochs = 20;
+        double lambda = 0.0;
         if (argc >= 2) epochs = std::max(1, std::atoi(argv[1]));
+        if (argc >= 3) lambda = std::atof(argv[2]);
         // online model coefficients (initially zero)
         Vector x_old;
         // load previous model if present
@@ -184,8 +187,22 @@ int main(int argc, char* argv[]){
             }
 
             // train model
-            LinearSystem sys(A,b);
-            Vector x_new = sys.Solve();
+            // train model: use Conjugate-Gradient solver for SPD regularized system when λ>0
+            Vector x_new;
+            if (lambda > 0.0) {
+                // form normal equations: (AᵀA + λI) x = Aᵀ b
+                Matrix At = A.transpose();
+                Matrix ATA = At * A;
+                for (int i = 1; i <= ATA.numRows(); ++i)
+                    ATA(i,i) += lambda;
+                Vector rhs = At * b;
+                // solve symmetric positive-definite system
+                PosSymLinSystem psys(ATA, rhs);
+                x_new = psys.Solve();
+            } else {
+                LinearSystem sys(A,b);
+                x_new = sys.Solve();
+            }
             // ensure x_old initialized at first epoch
             if (ep == 1 && x_old.size() != x_new.size()) {
                 x_old = Vector(x_new.size());
@@ -242,14 +259,12 @@ int main(int argc, char* argv[]){
             std::time_t t = std::chrono::system_clock::to_time_t(now);
             logFile << std::put_time(std::localtime(&t), "%Y-%m-%d %H:%M:%S")
                     << " [epoch " << ep << "] RMSE = " << rmse_best << "\n";
-            
-            // renumber epochs in log after each epochs complete
-            renumberEpochsInLog(outDir + "/rmse.log");
 
             // pause for 1 seconds before next epoch
-            // std::this_thread::sleep_for(std::chrono::seconds(01));
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
-
+        // renumber epochs in log after each epochs complete
+        renumberEpochsInLog(outDir + "/rmse.log");
 
         delete[] all;
     }
